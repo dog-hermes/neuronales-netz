@@ -948,12 +948,13 @@ const TOUR = [
 let tourI = -1;
 function tourShow(){
   document.querySelectorAll('.tour-hl').forEach(x => x.classList.remove('tour-hl'));
-  if (tourI < 0 || tourI >= TOUR.length){ $('#tourShade').style.display = 'none'; $('#tourBox').style.display = 'none'; tourI = -1; return; }
-  const [sel, txt] = TOUR[tourI], t = $(sel);
+  const steps = TOUR.filter(([sel]) => !$(sel).hidden);
+  if (tourI < 0 || tourI >= steps.length){ $('#tourShade').style.display = 'none'; $('#tourBox').style.display = 'none'; tourI = -1; return; }
+  const [sel, txt] = steps[tourI], t = $(sel);
   t.classList.add('tour-hl'); t.scrollIntoView({block: 'center', behavior: 'smooth'});
   $('#tourShade').style.display = 'block'; const box = $('#tourBox'); box.style.display = 'block';
-  $('#tourText').innerHTML = txt + `<br><span class="muted">${tourI + 1} / ${TOUR.length}</span>`;
-  $('#tourNext').textContent = tourI === TOUR.length - 1 ? 'Los geht’s!' : 'Weiter →';
+  $('#tourText').innerHTML = txt + `<br><span class="muted">${tourI + 1} / ${steps.length}</span>`;
+  $('#tourNext').textContent = tourI === steps.length - 1 ? 'Los geht’s!' : 'Weiter →';
   setTimeout(() => {
     const r = t.getBoundingClientRect(), b = box.getBoundingClientRect();
     let top = r.bottom + 12; if (top + b.height > window.innerHeight - 10) top = Math.max(10, r.top - b.height - 12);
@@ -1118,6 +1119,8 @@ function chatWelcome(){
   $('#chatLog').innerHTML = '';
   addMsg('bot', 'Hallo! 👋 Ich kenne diese Seite und sehe, wie dein Netz gerade eingestellt ist: Aufbau, Gewichte, Beispieltage und Fehlerkurve.\n\nFrag mich einfach, z.B. **warum der Fehler nicht sinkt** oder **was ein Knopf macht**.');
 }
+// Ausserhalb von claude.ai gibt es keinen Zugang zu Claude: dann den Chat ganz ausblenden.
+function hideChat(){ $('#chatBubble').hidden = true; $('#chatPanel').hidden = true; }
 function setChatUi(){
   const none = sampleState === 'none';
   $('#chatSend').hidden = chatBusy; $('#chatStop').hidden = !chatBusy;
@@ -1173,10 +1176,10 @@ $('#chatStop').onclick = () => chatCtl?.abort();
 $('#chatForm').addEventListener('submit', e => { e.preventDefault(); chatSend($('#chatIn').value); });
 $('#chatIn').addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey){ e.preventDefault(); chatSend($('#chatIn').value); } });
 chatWelcome();
-if (!window.claude || typeof window.claude.use !== 'function'){ sampleState = 'none'; setChatUi(); }
+if (!window.claude || typeof window.claude.use !== 'function'){ sampleState = 'none'; hideChat(); }
 else {
   setChatUi();
-  window.claude.use('sample').then(fn => { sampleFn = fn; sampleState = fn ? 'ok' : 'none'; setChatUi(); }).catch(() => { sampleState = 'none'; setChatUi(); });
+  window.claude.use('sample').then(fn => { sampleFn = fn; sampleState = fn ? 'ok' : 'none'; if (fn) setChatUi(); else hideChat(); }).catch(() => { sampleState = 'none'; hideChat(); });
 }
 
 // ---------- Start ----------
