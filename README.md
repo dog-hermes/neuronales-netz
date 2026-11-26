@@ -42,3 +42,20 @@ Nach Änderungen an `index.html` die Artifact-Version neu erzeugen:
 ```bash
 python3 build-artifact.py
 ```
+
+## Veröffentlichung auf claude.ai
+
+Die App ist als Artifact auf claude.ai veröffentlicht:
+
+**https://claude.ai/artifact/7vqQTuUiqZgok5WV7VTNh1**
+
+- `artifact.html` gelangt **nicht** über GitHub dorthin. Ein `git push` ändert das Artifact nicht.
+- Hochgeladen wird über Claude Code (Artifact-Werkzeug). Beim Aktualisieren bleibt die Adresse gleich, nur der Inhalt wird ersetzt.
+- Das Artifact ist zunächst **privat**. Andere können es erst öffnen, wenn es auf claude.ai über die Teilen-Funktion freigegeben wird.
+- Nur in dieser veröffentlichten Version funktioniert der 💬 Netz-Assistent. Die Fragen gehen direkt an Claude, über das claude.ai-Konto der Person, die die Seite benutzt (und zählen zu deren Nutzungslimit). Mitgeschickt wird jeweils ein Schnappschuss vom aktuellen Zustand des Netzes.
+
+Ablauf nach einer Änderung:
+
+1. `index.html` bearbeiten
+2. `python3 build-artifact.py` ausführen
+3. In Claude Code sagen: „Aktualisiere das Artifact“
