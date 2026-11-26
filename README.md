@@ -62,6 +62,5 @@ Die App ist als Artifact auf claude.ai veröffentlicht:
 
 Ablauf nach einer Änderung:
 
-1. `index.html` bearbeiten
-2. Committen (dabei wird `artifact.html` automatisch neu erzeugt)
-3. In Claude Code sagen: „Aktualisiere das Artifact“
+- **Änderung durch Claude Code:** Ein Claude-Code-Hook (`.claude/hooks/rebuild-artifact.sh`) erzeugt `artifact.html` sofort neu, und Claude veröffentlicht das Artifact danach automatisch.
+- **Änderung von Hand:** Beim Committen wird `artifact.html` automatisch neu erzeugt. Zum Veröffentlichen in Claude Code sagen: „Aktualisiere das Artifact“.
