@@ -37,7 +37,13 @@ open index.html
 | `artifact.html` | Version für die Veröffentlichung als Artifact auf claude.ai (ohne HTML-Grundgerüst) |
 | `build-artifact.py` | Erzeugt `artifact.html` aus `index.html` |
 
-Nach Änderungen an `index.html` die Artifact-Version neu erzeugen:
+`artifact.html` wird automatisch vor jedem Commit neu erzeugt (Git-Hook in `.githooks/pre-commit`). Nach einem frischen Klonen den Hook einmal einschalten:
+
+```bash
+git config core.hooksPath .githooks
+```
+
+Von Hand geht es auch:
 
 ```bash
 python3 build-artifact.py
@@ -57,5 +63,5 @@ Die App ist als Artifact auf claude.ai veröffentlicht:
 Ablauf nach einer Änderung:
 
 1. `index.html` bearbeiten
-2. `python3 build-artifact.py` ausführen
+2. Committen (dabei wird `artifact.html` automatisch neu erzeugt)
 3. In Claude Code sagen: „Aktualisiere das Artifact“
